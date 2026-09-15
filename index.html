@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Цифровая лаборатория. Территория идей 2026 - интерактивная карта</title>
+    <link rel="icon" href="assets/brand/ti22-mark-transparent.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app" aria-label="Интерактивная карта проектов">
+      <section class="screen map-screen is-active" id="map-screen" aria-labelledby="map-title">
+        <header class="screen-header">
+          <div class="brand-head">
+            <img class="brand-logo brand-mark" src="assets/brand/ti22-mark-transparent.png" alt="">
+            <div class="brand-copy">
+              <p class="kicker">Краевой онлайн-конкурс</p>
+              <h1 id="map-title">Цифровая лаборатория. Территория идей 2026</h1>
+              <p id="map-subtitle">Интерактивная карта детских инициатив Алтайского края</p>
+            </div>
+          </div>
+          <div class="header-aside">
+            <div class="organizer organizer-main">
+              <span>Главный организатор</span>
+              <img src="assets/brand/aictioko-logo-horizontal-white.png" alt="КАУ ДПО АИЦТИОКО имени О. Р. Львова">
+            </div>
+          </div>
+        </header>
+
+        <div class="map-wrap">
+          <svg id="map-svg" viewBox="300 220 1400 740" role="img" aria-labelledby="svg-title svg-desc">
+            <title id="svg-title">Карта Алтайского края с точками команд</title>
+            <desc id="svg-desc">На карте отмечены муниципалитеты команд. Тип точки зависит от места в рейтинге.</desc>
+            <defs>
+              <filter id="point-shadow" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#6ad7ff" flood-opacity="0.8"></feDropShadow>
+              </filter>
+            </defs>
+            <rect class="map-bg" width="1920" height="1080"></rect>
+            <image class="brand-regions" href="assets/map/altai-brand-regions.png" x="0" y="0" width="1920" height="1080"></image>
+            <g id="participant-region-layer"></g>
+            <image class="district-lines" href="assets/map/altai-district-lines.svg" x="0" y="0" width="1920" height="1080"></image>
+            <g id="participant-label-layer"></g>
+            <g id="points-layer"></g>
+          </svg>
+
+          <canvas class="ambient-canvas" id="ambient-canvas" aria-hidden="true"></canvas>
+          <aside class="info-card" id="info-card" hidden aria-live="polite"></aside>
+          <aside class="district-panel" id="district-panel" hidden aria-live="polite">
+            <div class="district-panel-head">
+              <p class="kicker">Панель района</p>
+              <button class="district-panel-close" id="district-panel-close" type="button" aria-label="Закрыть панель">×</button>
+              <h2 id="district-panel-title">Район</h2>
+              <p id="district-panel-count">0 команд</p>
+            </div>
+            <div class="district-team-grid" id="district-team-grid"></div>
+          </aside>
+          <aside class="map-editor-panel" id="map-editor-panel" hidden>
+            <p class="kicker">Настройка карты</p>
+            <h2>Расстановка районов и подписей</h2>
+            <p>Перетащите кружки и названия в нужные места. После настройки скачайте один файл координат.</p>
+            <div class="map-editor-actions">
+              <button id="download-map-positions" type="button">Скачать координаты</button>
+              <button id="reset-map-positions" type="button">Сбросить</button>
+            </div>
+            <p class="map-editor-status" id="map-editor-status">Черновик сохраняется в этом браузере.</p>
+          </aside>
+          <div class="interaction-hint" id="interaction-hint">
+            <span class="hint-touch-icon" aria-hidden="true"><i></i></span>
+            <span><b>Коснитесь района</b> чтобы раскрыть команды</span>
+          </div>
+        </div>
+
+        <div class="legend" aria-label="Фильтр команд">
+          <button class="legend-filter is-active" type="button" data-filter="all" aria-pressed="true">
+            <i class="legend-dot all"></i>Все
+          </button>
+          <button class="legend-filter" type="button" data-filter="winner" aria-pressed="false">
+            <i class="legend-dot winner"></i>Победители
+          </button>
+          <button class="legend-filter" type="button" data-filter="top30" aria-pressed="false">
+            <i class="legend-dot top30"></i>Финалисты
+          </button>
+          <button class="legend-filter" type="button" data-filter="participant" aria-pressed="false">
+            <i class="legend-dot participant"></i>Участники
+          </button>
+        </div>
+      </section>
+
+      <section class="screen project-screen" id="project-screen" hidden aria-labelledby="project-title">
+        <div class="project-layout">
+          <article class="project-text">
+            <div class="project-sticky-head">
+              <p class="kicker" id="project-rank">Место</p>
+              <h2 id="project-title">Название проекта</h2>
+              <p class="team-line" id="project-team">Команда</p>
+              <p class="members-line" id="project-members"></p>
+            </div>
+            <div class="project-scroll-body">
+              <p class="idea-text" id="project-idea">Описание идеи</p>
+              <div class="details-list" id="project-details"></div>
+              <dl class="project-meta">
+                <div>
+                  <dt>Муниципалитет</dt>
+                  <dd id="project-municipality"></dd>
+                </div>
+                <div>
+                  <dt>Организация</dt>
+                  <dd id="project-organization"></dd>
+                </div>
+                <div>
+                  <dt>Баллы</dt>
+                  <dd id="project-score"></dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+
+          <section class="project-media" id="project-gallery" aria-label="Материалы проекта">
+            <div class="project-carousel" id="project-carousel" tabindex="0">
+              <button class="carousel-button carousel-prev" id="carousel-prev" type="button" aria-label="Предыдущее изображение">‹</button>
+              <div class="carousel-stage" id="carousel-stage"></div>
+              <button class="carousel-button carousel-next" id="carousel-next" type="button" aria-label="Следующее изображение">›</button>
+              <div class="carousel-ui">
+                <p id="carousel-caption"></p>
+                <div class="carousel-dots" id="carousel-dots" aria-label="Выбор изображения"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="modal" id="modal" hidden aria-modal="true" role="dialog" aria-labelledby="modal-title">
+        <article class="modal-card">
+          <button class="modal-close" id="modal-close" type="button" aria-label="Закрыть">×</button>
+          <div class="modal-media" id="modal-media" hidden></div>
+          <p class="kicker" id="modal-rank">Место</p>
+          <h2 id="modal-title">Название проекта</h2>
+          <p class="team-line" id="modal-team">Команда</p>
+          <p id="modal-text"></p>
+          <dl class="project-meta compact">
+            <div>
+              <dt>Муниципалитет</dt>
+              <dd id="modal-municipality"></dd>
+            </div>
+            <div>
+              <dt>Организация</dt>
+              <dd id="modal-organization"></dd>
+            </div>
+            <div>
+              <dt>Баллы</dt>
+              <dd id="modal-score"></dd>
+            </div>
+          </dl>
+        </article>
+      </section>
+
+      <section class="modal about-modal" id="about-modal" hidden aria-modal="true" role="dialog" aria-labelledby="about-title">
+        <article class="modal-card about-card">
+          <button class="modal-close" id="about-close" type="button" aria-label="Закрыть">×</button>
+          <p class="kicker">О проекте</p>
+          <h2 id="about-title">Цифровая лаборатория. Территория идей 2026</h2>
+          <div class="about-story">
+            <p>«Цифровая лаборатория. Территория идей» — это проект дополнительного образования, в котором школьники 5-8 классов прошли путь от идеи до собственного проектного решения.</p>
+            <p>Участники исследовали проблемы своих школ, городов и сёл, работали в командах, искали способы реализации и создавали визуализации с применением технологий искусственного интеллекта. ИИ стал для ребят инструментом исследования, творчества и презентации замысла.</p>
+            <p>Нам было важно увидеть, о чём мечтают дети и какой они хотят видеть среду вокруг себя. Многие детские идеи уже близки к тому, что реально создаётся в Алтайском крае в рамках региональных и национальных проектов. Но есть и необычные, смелые и неожиданные предложения.</p>
+            <p>С этими решениями мы и предлагаем познакомиться на интерактивной карте детских инициатив Алтайского края.</p>
+          </div>
+          <section class="about-links" aria-labelledby="about-links-title">
+            <h3 id="about-links-title">Продолжить знакомство</h3>
+            <div class="about-qr-grid">
+              <a class="about-qr-item" href="https://vk.ru/fungram22" target="_blank" rel="noopener noreferrer"><img src="assets/qr/functional-literacy.png" alt="QR-код сообщества по функциональной грамотности"><span><b>Функциональная грамотность</b><small>Конкурсы, новости и Чемпионат «ФГ+»</small></span></a>
+              <a class="about-qr-item" href="https://vkvideo.ru/video-227855134_456239060" target="_blank" rel="noopener noreferrer"><img src="assets/qr/contest-broadcast.png" alt="QR-код трансляции конкурса Территория идей"><span><b>Трансляция конкурса</b><small>«Территория идей»</small></span></a>
+              <a class="about-qr-item" href="https://vkvideo.ru/video-227855134_456239081" target="_blank" rel="noopener noreferrer"><img src="assets/qr/expert-broadcast.png" alt="QR-код трансляции экспертного эфира Территория идей"><span><b>Экспертный эфир</b><small>Онлайн-эфир «Территория идей»</small></span></a>
+            </div>
+          </section>
+          <dl class="project-meta compact">
+            <div>
+              <dt>Участники</dt>
+              <dd id="about-participants"></dd>
+            </div>
+            <div>
+              <dt>Организатор</dt>
+              <dd id="about-organizer"></dd>
+            </div>
+          </dl>
+        </article>
+      </section>
+
+      <nav class="bottom-nav" aria-label="Навигация">
+        <button id="back-button" type="button">Назад</button>
+        <button id="home-button" type="button">Домой</button>
+        <button id="about-button" class="nav-info-button" type="button" aria-label="О проекте">i</button>
+      </nav>
+    </main>
+
+    <script src="data/altai-geometry.js"></script>
+    <script src="data/site-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
