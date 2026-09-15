@@ -2033,6 +2033,358 @@ p {
   }
 }
 
+@media (max-width: 760px) {
+  html,
+  body {
+    min-height: 100%;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .app {
+    min-height: 100vh;
+    height: auto;
+    overflow: visible;
+  }
+
+  .app::before {
+    position: fixed;
+    opacity: 0.38;
+  }
+
+  .screen {
+    position: relative;
+    min-height: 100vh;
+    height: auto;
+    padding: 14px 12px 92px;
+    overflow: visible;
+  }
+
+  .screen-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    height: auto;
+  }
+
+  .brand-head {
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .brand-mark {
+    width: 62px;
+    margin: 0;
+  }
+
+  .brand-copy {
+    padding-top: 2px;
+  }
+
+  .kicker {
+    margin-bottom: 5px;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+  }
+
+  h1 {
+    max-width: none;
+    font-size: 20px;
+    line-height: 1.08;
+  }
+
+  #map-subtitle {
+    margin-bottom: 0;
+    font-size: 13px;
+    line-height: 1.28;
+  }
+
+  .header-aside {
+    max-width: none;
+    padding-top: 0;
+  }
+
+  .organizer-main {
+    width: min(230px, 66vw);
+  }
+
+  .organizer span {
+    font-size: 9px;
+  }
+
+  .organizer img {
+    max-height: 44px;
+  }
+
+  .map-wrap {
+    height: min(68vh, 560px);
+    min-height: 420px;
+    margin-top: 12px;
+    border-radius: 8px;
+  }
+
+  #map-svg {
+    min-width: 760px;
+    transform-origin: 50% 46%;
+  }
+
+  .map-wrap.has-district-panel #map-svg {
+    opacity: 0.58;
+    transform: translateY(-10%) scale(0.72);
+    transform-origin: 50% 28%;
+  }
+
+  .ambient-canvas {
+    opacity: 0.36;
+  }
+
+  .legend {
+    gap: 8px;
+    margin-top: 10px;
+    padding-right: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .legend::-webkit-scrollbar {
+    display: none;
+  }
+
+  .legend-filter {
+    min-width: max-content;
+    min-height: 44px;
+    padding: 8px 12px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .interaction-hint {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    max-width: none;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .info-card {
+    left: 12px;
+    right: 12px;
+    top: auto;
+    bottom: 12px;
+    width: auto;
+    max-height: 42%;
+    padding: 14px;
+    overflow-y: auto;
+    pointer-events: none;
+  }
+
+  .info-card h2 {
+    font-size: 22px;
+    line-height: 1.12;
+  }
+
+  .info-card p {
+    font-size: 14px;
+    line-height: 1.32;
+  }
+
+  .district-panel {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    width: auto;
+    min-width: 0;
+    max-height: 72vh;
+    padding: 16px 12px 92px;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 8px 8px 0 0;
+    background: rgba(14, 44, 98, 0.96);
+  }
+
+  .district-panel-head {
+    padding-right: 54px;
+  }
+
+  .district-panel-head h2 {
+    font-size: 24px;
+    line-height: 1.12;
+  }
+
+  .district-panel-close {
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+  }
+
+  .district-team-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding-right: 0;
+  }
+
+  .district-team-tile {
+    grid-template-columns: 64px minmax(0, 1fr);
+    min-height: 116px;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .tile-visual {
+    width: 64px;
+    height: 64px;
+  }
+
+  .tile-title {
+    font-size: 15px;
+    line-height: 1.18;
+  }
+
+  .tile-meta,
+  .tile-organization {
+    font-size: 12px;
+    line-height: 1.25;
+  }
+
+  .bottom-nav {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .bottom-nav button {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 48px;
+    padding: 0 12px;
+    font-size: 14px;
+  }
+
+  .bottom-nav .nav-info-button {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    font-size: 24px;
+  }
+
+  .project-screen {
+    overflow: visible;
+  }
+
+  .project-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: auto;
+  }
+
+  .project-text,
+  .project-media,
+  .modal-card {
+    box-shadow: 0 14px 36px rgba(7, 18, 48, 0.28);
+  }
+
+  .project-sticky-head {
+    padding: 16px 16px 12px;
+  }
+
+  .project-scroll-body {
+    max-height: none;
+    overflow: visible;
+    padding: 14px 16px 18px;
+  }
+
+  .project-text h2 {
+    font-size: 24px;
+    line-height: 1.12;
+  }
+
+  .project-text p,
+  .idea-text,
+  .detail-item p,
+  .project-meta dd {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .project-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .project-media {
+    min-height: 360px;
+  }
+
+  .project-carousel {
+    min-height: 360px;
+  }
+
+  .carousel-stage {
+    min-height: 300px;
+  }
+
+  .carousel-button {
+    width: 42px;
+    height: 42px;
+    font-size: 28px;
+  }
+
+  .carousel-ui {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .modal {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal-card {
+    width: 100%;
+    max-height: 86vh;
+    overflow-y: auto;
+    padding: 18px 16px 92px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .modal-close {
+    width: 44px;
+    height: 44px;
+  }
+
+  .modal-card h2 {
+    padding-right: 48px;
+    font-size: 24px;
+    line-height: 1.12;
+  }
+
+  .about-card {
+    padding-right: 16px;
+  }
+
+  .about-qr-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-qr-item {
+    grid-template-columns: 64px minmax(0, 1fr);
+  }
+
+  .about-qr-item img {
+    width: 64px;
+    height: 64px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cluster-glow,
   .point-ring,
