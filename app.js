@@ -975,6 +975,8 @@ function openDistrictPanel(group) {
   renderDistrictPanel(group);
   mapWrap.classList.add("has-district-panel");
   districtPanel.hidden = false;
+  districtPanel.scrollTop = 0;
+  districtTeamGrid.scrollTop = 0;
   districtPanel.classList.remove("is-closing");
   districtPanel.classList.add("is-open");
   updateNav();
