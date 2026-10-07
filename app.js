@@ -35,6 +35,9 @@ const homeButton = document.getElementById("home-button");
 const mapWrap = document.querySelector(".map-wrap");
 const ambientCanvas = document.getElementById("ambient-canvas");
 const interactionHint = document.getElementById("interaction-hint");
+const mobileMapTab = document.getElementById("mobile-map-tab");
+const mobileListTab = document.getElementById("mobile-list-tab");
+const mobileDistrictList = document.getElementById("mobile-district-list");
 const carousel = document.getElementById("project-carousel");
 const carouselStage = document.getElementById("carousel-stage");
 const carouselCaption = document.getElementById("carousel-caption");
@@ -102,6 +105,7 @@ let activeScreen = "map";
 let selectedMunicipalityKey = null;
 let flippedParticipantCard = null;
 let activeTeamFilter = "all";
+let mobileViewMode = "map";
 let idleTimer = null;
 let manualClusterPositions = mapSetupMode ? loadManualClusterPositions() : {};
 let manualLabelPositions = mapSetupMode ? loadManualLabelPositions() : {};
@@ -860,6 +864,74 @@ function renderPoints() {
       return a.count - b.count || b.name.localeCompare(a.name, "ru");
     })
     .forEach(renderMunicipalityGroup);
+}
+
+function setMobileViewMode(nextMode) {
+  mobileViewMode = nextMode === "list" ? "list" : "map";
+  const isList = mobileViewMode === "list";
+  mapWrap.hidden = isList;
+  mobileDistrictList.hidden = !isList;
+  mobileMapTab?.classList.toggle("is-active", !isList);
+  mobileListTab?.classList.toggle("is-active", isList);
+  mobileMapTab?.setAttribute("aria-selected", isList ? "false" : "true");
+  mobileListTab?.setAttribute("aria-selected", isList ? "true" : "false");
+  if (isList) {
+    renderMobileDistrictList();
+  } else {
+    resetMapViewport();
+  }
+}
+
+function renderMobileDistrictList() {
+  if (!mobileDistrictList) {
+    return;
+  }
+  mobileDistrictList.replaceChildren();
+  const groups = getVisibleMunicipalityGroups().sort((a, b) => a.name.localeCompare(b.name, "ru"));
+
+  if (!groups.length) {
+    const empty = document.createElement("p");
+    empty.className = "mobile-district-empty";
+    empty.textContent = "По выбранному фильтру команд нет.";
+    mobileDistrictList.appendChild(empty);
+    return;
+  }
+
+  groups.forEach((group) => {
+    mobileDistrictList.appendChild(renderMobileDistrictButton(group));
+  });
+}
+
+function renderMobileDistrictButton(group) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "mobile-district-item";
+  button.dataset.key = group.key;
+
+  const title = textElement("strong", group.name);
+  const meta = textElement("span", `${group.count} ${pluralizeTeams(group.count)}`);
+  const counts = document.createElement("span");
+  counts.className = "mobile-district-counts";
+
+  [
+    ["winner", "П", group.teams.filter((team) => team.type === "winner").length],
+    ["top30", "Ф", group.teams.filter((team) => team.type === "top30").length],
+    ["participant", "У", group.teams.filter((team) => team.type === "participant").length]
+  ]
+    .filter((item) => item[2] > 0)
+    .forEach(([type, label, count]) => {
+      const pill = document.createElement("span");
+      pill.className = `mobile-count-pill ${type}`;
+      pill.textContent = `${label}: ${count}`;
+      counts.appendChild(pill);
+    });
+
+  const text = document.createElement("span");
+  text.className = "mobile-district-copy";
+  text.append(title, meta);
+  button.append(text, counts);
+  button.addEventListener("click", () => openDistrictPanel(group));
+  return button;
 }
 
 function renderMunicipalityGroup(group) {
@@ -1942,6 +2014,7 @@ function setActiveTeamFilter(nextFilter) {
   renderParticipantRegionHighlights();
   renderParticipantLabels();
   renderPoints();
+  renderMobileDistrictList();
   updateNav();
 }
 
@@ -1951,6 +2024,7 @@ function resetTeamFilter() {
   }
   activeTeamFilter = "all";
   updateFilterButtons();
+  renderMobileDistrictList();
 }
 
 function updateFilterButtons() {
@@ -2207,6 +2281,8 @@ modal.addEventListener("click", (event) => {
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => setActiveTeamFilter(button.dataset.filter || "all"));
 });
+mobileMapTab?.addEventListener("click", () => setMobileViewMode("map"));
+mobileListTab?.addEventListener("click", () => setMobileViewMode("list"));
 backButton.addEventListener("click", () => {
   if (!modal.hidden) {
     closeModal();
@@ -2271,6 +2347,7 @@ updateFilterButtons();
 renderParticipantRegionHighlights();
 renderParticipantLabels();
 renderPoints();
+renderMobileDistrictList();
 initProjectCarousel();
 initMapViewport();
 readRoute();

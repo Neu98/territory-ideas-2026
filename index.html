@@ -27,7 +27,7 @@
           </div>
         </header>
 
-        <div class="map-wrap">
+        <div class="map-wrap" id="map-wrap">
           <svg id="map-svg" viewBox="300 220 1400 740" role="img" aria-labelledby="svg-title svg-desc">
             <title id="svg-title">Карта Алтайского края с точками команд</title>
             <desc id="svg-desc">На карте отмечены муниципалитеты команд. Тип точки зависит от места в рейтинге.</desc>
@@ -70,6 +70,13 @@
             <span><b>Коснитесь района</b> чтобы раскрыть команды</span>
           </div>
         </div>
+
+        <div class="mobile-view-toggle" role="tablist" aria-label="Режим просмотра">
+          <button class="is-active" id="mobile-map-tab" type="button" aria-controls="map-wrap" aria-selected="true">Карта</button>
+          <button id="mobile-list-tab" type="button" aria-controls="mobile-district-list" aria-selected="false">Список</button>
+        </div>
+
+        <section class="mobile-district-list" id="mobile-district-list" aria-label="Список районов" hidden></section>
 
         <div class="legend" aria-label="Фильтр команд">
           <button class="legend-filter is-active" type="button" data-filter="all" aria-pressed="true">

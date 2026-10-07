@@ -1383,6 +1383,11 @@ p {
   background: var(--participant);
 }
 
+.mobile-view-toggle,
+.mobile-district-list {
+  display: none;
+}
+
 .project-layout {
   display: grid;
   grid-template-columns: 0.82fr 1.18fr;
@@ -2407,7 +2412,7 @@ p {
 
   .map-screen {
     display: none;
-    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
     gap: 6px;
   }
 
@@ -2416,23 +2421,29 @@ p {
   }
 
   .screen-header {
-    gap: 3px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 5px 8px 6px;
+    border: 1px solid rgba(245, 240, 224, 0.2);
+    border-radius: 8px;
+    background: rgba(14, 44, 98, 0.28);
   }
 
   .brand-head {
     align-items: center;
-    justify-content: center;
-    gap: 7px;
-    text-align: center;
+    justify-content: flex-start;
+    gap: 8px;
+    text-align: left;
   }
 
   .brand-mark {
-    width: clamp(28px, 7.5vw, 36px);
+    width: clamp(34px, 9vw, 44px);
     filter: drop-shadow(0 0 8px rgba(0, 125, 177, 0.5));
   }
 
   .brand-copy {
-    flex: 0 1 auto;
+    flex: 1 1 auto;
     padding-top: 0;
   }
 
@@ -2453,26 +2464,42 @@ p {
   }
 
   .header-aside {
-    justify-content: center;
+    justify-content: flex-start;
+    max-width: none;
   }
 
   .organizer {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
     align-items: center;
-    gap: 2px;
-    text-align: center;
+    gap: 7px;
+    width: 100%;
+    text-align: left;
   }
 
   .organizer-main {
-    width: min(160px, 44vw);
+    width: 100%;
   }
 
   .organizer span {
+    min-width: max-content;
+    font-size: clamp(7px, 2vw, 9px);
+    color: rgba(245, 240, 224, 0.66);
+  }
+
+  .organizer span {
+    font-size: 0;
+  }
+
+  .organizer span::after {
+    content: "Создано при поддержке";
     font-size: clamp(7px, 2vw, 9px);
   }
 
   .organizer img {
-    max-height: clamp(22px, 5vh, 34px);
-    object-position: center;
+    width: min(138px, 38vw);
+    max-height: clamp(18px, 4.3vh, 28px);
+    object-position: left center;
   }
 
   .map-wrap {
@@ -2480,6 +2507,121 @@ p {
     min-height: 0;
     margin-top: 0;
     border-radius: 8px;
+  }
+
+  .mobile-view-toggle {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .mobile-view-toggle button {
+    min-height: 32px;
+    border: 1px solid rgba(245, 240, 224, 0.44);
+    border-radius: 8px;
+    background: rgba(24, 63, 124, 0.52);
+    color: rgba(245, 240, 224, 0.84);
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .mobile-view-toggle button.is-active {
+    border-color: rgba(245, 240, 224, 0.88);
+    background: var(--cream);
+    color: var(--brand-blue);
+  }
+
+  .mobile-district-list {
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 2px 2px 8px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(14, 44, 98, 0.48);
+  }
+
+  .mobile-district-list:not([hidden]) {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+  }
+
+  .mobile-district-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+    min-height: 58px;
+    padding: 9px 10px;
+    border: 1px solid rgba(245, 240, 224, 0.34);
+    border-radius: 8px;
+    background: rgba(24, 63, 124, 0.68);
+    color: var(--text);
+    text-align: left;
+  }
+
+  .mobile-district-copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .mobile-district-copy strong {
+    overflow: hidden;
+    color: var(--cream);
+    font-size: 14px;
+    line-height: 1.12;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-district-copy span {
+    color: rgba(245, 240, 224, 0.72);
+    font-size: 11px;
+  }
+
+  .mobile-district-counts {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px;
+    max-width: 108px;
+  }
+
+  .mobile-count-pill {
+    min-width: 32px;
+    padding: 3px 6px;
+    border-radius: 999px;
+    background: rgba(245, 240, 224, 0.12);
+    color: var(--cream);
+    font-size: 10px;
+    font-weight: 900;
+    text-align: center;
+  }
+
+  .mobile-count-pill.winner {
+    background: var(--pink);
+  }
+
+  .mobile-count-pill.top30 {
+    background: var(--lime);
+    color: var(--brand-blue);
+  }
+
+  .mobile-count-pill.participant {
+    background: var(--cyan);
+  }
+
+  .mobile-district-empty {
+    margin: 0;
+    padding: 18px;
+    color: rgba(245, 240, 224, 0.78);
+    font-size: 14px;
+    text-align: center;
   }
 
   #map-svg {
@@ -2558,7 +2700,7 @@ p {
   .district-panel {
     top: auto;
     bottom: 0;
-    height: min(76dvh, 680px);
+    height: min(80dvh, 690px);
     max-height: calc(100dvh - 72px);
     padding: 12px 10px calc(60px + env(safe-area-inset-bottom));
     overflow: hidden;
@@ -2592,16 +2734,52 @@ p {
   }
 
   .district-team-tile {
-    min-height: 92px;
+    grid-template-columns: 56px minmax(0, 1fr);
+    min-height: 86px;
+    padding: 8px;
   }
 
-  .tile-title {
-    font-size: 14px;
+  .tile-visual {
+    width: 56px;
+    height: 56px;
   }
 
-  .tile-meta,
-  .tile-organization {
-    font-size: 11px;
+  .tile-text {
+    min-width: 0;
+    gap: 3px;
+  }
+
+  .tile-text strong {
+    font-size: 13px;
+    line-height: 1.1;
+    -webkit-line-clamp: 2;
+  }
+
+  .tile-text span {
+    font-size: 12px;
+    line-height: 1.15;
+    -webkit-line-clamp: 2;
+  }
+
+  .tile-text small {
+    font-size: 10px;
+    line-height: 1.15;
+    -webkit-line-clamp: 2;
+  }
+
+  .flip-card,
+  .flip-card-inner {
+    min-height: 96px;
+  }
+
+  .flip-card-face {
+    padding: 10px;
+  }
+
+  .flip-card-back span {
+    font-size: 12px;
+    line-height: 1.2;
+    -webkit-line-clamp: 5;
   }
 }
 
