@@ -903,10 +903,14 @@ function renderMobileDistrictList() {
 }
 
 function renderMobileDistrictButton(group) {
+  const item = document.createElement("article");
+  item.className = "mobile-district-item";
+  item.dataset.key = group.key;
+
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "mobile-district-item";
-  button.dataset.key = group.key;
+  button.className = "mobile-district-head";
+  button.setAttribute("aria-expanded", "false");
 
   const title = textElement("strong", group.name);
   const meta = textElement("span", `${group.count} ${pluralizeTeams(group.count)}`);
@@ -929,9 +933,29 @@ function renderMobileDistrictButton(group) {
   const text = document.createElement("span");
   text.className = "mobile-district-copy";
   text.append(title, meta);
-  button.append(text, counts);
-  button.addEventListener("click", () => openDistrictPanel(group));
-  return button;
+
+  const chevron = document.createElement("span");
+  chevron.className = "mobile-district-chevron";
+  chevron.textContent = "›";
+  chevron.setAttribute("aria-hidden", "true");
+
+  const teams = document.createElement("div");
+  teams.className = "mobile-district-teams";
+  teams.hidden = true;
+  sortTeamsForRibbon(group.teams).forEach((team) => {
+    teams.appendChild(renderDistrictTeamTile(team));
+  });
+
+  button.append(text, counts, chevron);
+  button.addEventListener("click", () => {
+    const isOpen = !teams.hidden;
+    teams.hidden = isOpen;
+    item.classList.toggle("is-open", !isOpen);
+    button.setAttribute("aria-expanded", isOpen ? "false" : "true");
+  });
+
+  item.append(button, teams);
+  return item;
 }
 
 function renderMunicipalityGroup(group) {
