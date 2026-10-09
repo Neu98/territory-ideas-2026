@@ -2424,13 +2424,15 @@ p {
     display: grid;
     grid-template-columns: 1fr;
     gap: 4px;
-    padding: 5px 8px 6px;
+    justify-items: center;
+    padding: 6px 10px 7px;
     border: 1px solid rgba(245, 240, 224, 0.2);
     border-radius: 8px;
     background: rgba(14, 44, 98, 0.28);
   }
 
   .brand-head {
+    width: 100%;
     align-items: center;
     justify-content: flex-start;
     gap: 8px;
@@ -2464,17 +2466,17 @@ p {
   }
 
   .header-aside {
-    justify-content: flex-start;
+    justify-content: center;
+    width: 100%;
     max-width: none;
   }
 
   .organizer {
-    display: grid;
-    grid-template-columns: max-content minmax(0, 1fr);
+    display: flex;
     align-items: center;
-    gap: 7px;
-    width: 100%;
-    text-align: left;
+    gap: 2px;
+    width: min(210px, 58vw);
+    text-align: center;
   }
 
   .organizer-main {
@@ -2482,24 +2484,17 @@ p {
   }
 
   .organizer span {
-    min-width: max-content;
+    align-self: center;
     font-size: clamp(7px, 2vw, 9px);
+    line-height: 1.05;
     color: rgba(245, 240, 224, 0.66);
-  }
-
-  .organizer span {
-    font-size: 0;
-  }
-
-  .organizer span::after {
-    content: "Создано при поддержке";
-    font-size: clamp(7px, 2vw, 9px);
+    letter-spacing: 0.03em;
   }
 
   .organizer img {
-    width: min(138px, 38vw);
-    max-height: clamp(18px, 4.3vh, 28px);
-    object-position: left center;
+    width: min(148px, 42vw);
+    max-height: clamp(20px, 4.7vh, 31px);
+    object-position: center;
   }
 
   .map-wrap {
