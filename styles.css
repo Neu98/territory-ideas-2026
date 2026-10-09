@@ -2557,16 +2557,18 @@ p {
   .mobile-district-list:not([hidden]) {
     display: grid;
     align-content: start;
+    grid-auto-rows: max-content;
     gap: 8px;
   }
 
   .mobile-district-item {
     display: grid;
     gap: 0;
+    min-height: 60px;
     border: 1px solid rgba(245, 240, 224, 0.34);
     border-radius: 8px;
     background: rgba(24, 63, 124, 0.68);
-    overflow: hidden;
+    overflow: visible;
   }
 
   button.mobile-district-item {
